@@ -9,6 +9,7 @@ import java.io.File
 import java.net.MalformedURLException
 import java.net.URL
 import java.net.URLClassLoader
+import java.util.*
 
 class DokkaArguments {
     @set:Argument(value = "src", description = "Source file or directory (allows many paths separated by the system path separator)")
@@ -62,6 +63,10 @@ class DokkaArguments {
     @set:Argument(value = "apiVersion", description = "Kotlin Api Version to pass to Kotlin Analysis")
     var apiVersion: String? = null
 
+    override fun toString(): String {
+        return "DokkaArguments(src='$src', srcLink='$srcLink', include='$include', samples='$samples', outputDir='$outputDir', outputFormat='$outputFormat', moduleName='$moduleName', classpath='$classpath', nodeprecated=$nodeprecated, jdkVersion=$jdkVersion, impliedPlatforms='$impliedPlatforms', packageOptions='$packageOptions', links='$links', noStdlibLink=$noStdlibLink, cacheRoot=$cacheRoot, languageVersion=$languageVersion, apiVersion=$apiVersion)"
+    }
+
 }
 
 
@@ -90,6 +95,9 @@ object MainKt {
     fun entry(args: Array<String>) {
         val arguments = DokkaArguments()
         val freeArgs: List<String> = Args.parse(arguments, args) ?: listOf()
+        println(Arrays.toString(args))
+        println(arguments)
+        println(freeArgs)
         val sources = if (arguments.src.isNotEmpty()) arguments.src.split(File.pathSeparatorChar).toList() + freeArgs else freeArgs
         val samples = if (arguments.samples.isNotEmpty()) arguments.samples.split(File.pathSeparatorChar).toList() else listOf()
         val includes = if (arguments.include.isNotEmpty()) arguments.include.split(File.pathSeparatorChar).toList() else listOf()
